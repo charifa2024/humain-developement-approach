@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fact Sheet - Students for Human Development</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Merriweather:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #005088;
+            --primary-dark: #002e5d;
+            --secondary: #11caa0;
+            --bg-cream: #fffcf7;
+            --text-dark: #334155;
+            --text-muted: #64748b;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #cbd5e1;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Fixed 16:9 presentation frame */
+        .presentation-container {
+            width: 1280px;
+            height: 720px;
+            background-color: var(--bg-cream);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            border-radius: 12px;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Side navigation menu */
+        .sidebar {
+            width: 320px;
+            background-color: var(--primary-dark);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .sidebar .logo-area h2 {
+            font-family: 'Merriweather', serif;
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar .logo-area p {
+            color: var(--secondary);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 40px 0;
+        }
+
+        .nav-item {
+            padding: 12px 18px;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            border: none;
+            background: none;
+            text-align: left;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item:focus-visible {
+            outline: 2px solid var(--secondary);
+            outline-offset: 2px;
+        }
+
+        .nav-item.active {
+            border-left: 4px solid var(--secondary);
+            background-color: rgba(17, 202, 160, 0.15);
+            color: var(--secondary);
+        }
+
+        .sidebar-footer {
+            color: #64748b;
+            font-size: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+
+        /* Content display area */
+        .main-content {
+            flex-grow: 1;
+            position: relative;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Background decoration */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(17, 202, 160, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Slide/section handling */
+        .section-view {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .section-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography & content elements */
+        .slide-title {
+            font-family: 'Merriweather', serif;
+            font-size: 38px;
+            color: var(--primary);
+            margin-bottom: 30px;
+            border-left: 6px solid var(--secondary);
+            padding-left: 15px;
+        }
+
+        p.lead {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        /* Specific layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-bottom: 4px solid var(--secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 20px;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 i {
+            color: var(--secondary);
+        }
+
+        .card p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Styled list */
+        .custom-list {
+            list-style: none;
+        }
+
+        .custom-list li {
+            font-size: 16px;
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 30px;
+            line-height: 1.5;
+        }
+
+        .custom-list li i {
+            position: absolute;
+            left: 0;
+            top: 4px;
+            color: var(--secondary);
+            font-size: 18px;
+        }
+
+        /* Hero opening slide */
+        .hero-slide {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .hero-slide h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 54px;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-slide .divider {
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            margin: 25px auto;
+        }
+
+        .hero-slide p {
+            font-size: 22px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Highlighted stat callout */
+        .stat-box {
+            background-color: rgba(0, 80, 136, 0.03);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 15px;
+        }
+
+        .stat-box strong {
+            color: var(--primary);
+        }
+
+        /* Closing commitment block */
+        .commitment-box {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .commitment-box h3 {
+            color: var(--secondary);
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-family: 'Merriweather', serif;
+        }
+
+        .commitment-box p {
+            color: #e2e8f0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Slide counter */
+        .slide-counter {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+        <div class="sidebar">
+            <div class="logo-area">
+                <h2>Student Vision</h2>
+                <p>Human Development</p>
+            </div>
+
+            <ul class="nav-menu">
+                <li><button class="nav-item active" data-section="home" onclick="showSection('home', this)"><i class="fa-solid fa-house"></i> Home</button></li>
+                <li><button class="nav-item" data-section="problem" onclick="showSection('problem', this)"><i class="fa-solid fa-triangle-exclamation"></i> The Problem</button></li>
+                <li><button class="nav-item" data-section="affected" onclick="showSection('affected', this)"><i class="fa-solid fa-users"></i> Who Is Affected</button></li>
+                <li><button class="nav-item" data-section="why" onclick="showSection('why', this)"><i class="fa-solid fa-chart-line"></i> Why It Matters</button></li>
+                <li><button class="nav-item" data-section="solution" onclick="showSection('solution', this)"><i class="fa-solid fa-lightbulb"></i> Our Solution</button></li>
+                <li><button class="nav-item" data-section="action" onclick="showSection('action', this)"><i class="fa-solid fa-bolt"></i> Why We're Positioned to Act</button></li>
+                <li><button class="nav-item" data-section="impact" onclick="showSection('impact', this)"><i class="fa-solid fa-star"></i> Expected Impact</button></li>
+                <li><button class="nav-item" data-section="commitment" onclick="showSection('commitment', this)"><i class="fa-solid fa-handshake"></i> Our Commitment</button></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                Social Contribution Project &bull; 2026
+            </div>
+        </div>
+
+        <div class="main-content">
+
+            <div id="home" class="section-view active">
+                <div class="hero-slide">
+                    <h1>How can students contribute to human development?</h1>
+                    <div class="divider"></div>
+                    <p>A multidisciplinary initiative to reduce inequality in rural and underserved areas of Morocco.</p>
+                </div>
+            </div>
+
+            <div id="problem" class="section-view">
+                <h2 class="slide-title">The Problem</h2>
+                <div class="grid-2">
+                    <div>
+                        <p class="lead">We see stark <strong>inequality in access to education, healthcare, and basic living standards</strong>, a gap that is especially pronounced between urban and rural Morocco.</p>
+                        <p>Many communities lack adequate schooling support, basic medical information, and essential services, keeping them trapped in a cycle of isolation.</p>
+                    </div>
+                    <div>
+                        <div class="stat-box">
+                            <p><strong>HCP Report:</strong> Rural poverty rates remain far higher than urban ones. Regional gaps persist and continue to hold back human development nationwide.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="affected" class="section-view">
+                <h2 class="slide-title">Who Is Affected</h2>
+                <p class="lead" style="margin-bottom: 30px;">Exclusion falls hardest on the most vulnerable groups in isolated areas:</p>
+                <div class="grid-3">
+                    <div class="card">
+                        <h3><i class="fa-solid fa-child"></i> Children</h3>
+                        <p>Weak or missing education today puts their future opportunities at serious risk.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fa-solid fa-person-dress"></i> Women</h3>
+                        <p>Especially affected when health awareness and basic prenatal care are out of reach.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fa-solid fa-house-chimney-crack"></i> Families & Communities</h3>
+                        <p>Low-income households cut off from information networks and essential services.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="why" class="section-view">
+                <h2 class="slide-title">Why It Matters</h2>
+                <div class="grid-2">
+                    <div>
+                        <ul class="custom-list">
+                            <li><i class="fa-solid fa-shield-halved"></i> <strong>Education as a shield:</strong> It's the most powerful tool for permanently breaking the cycle of poverty.</li>
+                            <li><i class="fa-solid fa-wand-magic-sparkles"></i> <strong>Access to knowledge:</strong> Being well-informed lets people make sound decisions about their health and actively improve their daily lives.</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-bottom-color: #e11d48;">
+                        <h3 style="color: #991b1b;"><i class="fa-solid fa-circle-exclamation"></i> The Real Risk</h3>
+                        <p>Ignoring these regional gaps means accepting that an entire generation gets left behind by the country's progress.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="solution" class="section-view">
+                <h2 class="slide-title">Our Solution: The Student Network</h2>
+                <p class="lead" style="margin-bottom: 25px;">Building a student community that brings together key skills: <strong>medicine, computer science, business, languages, and social sciences.</strong></p>
+                <div class="grid-3">
+                    <div class="card">
+                        <h3><i class="fa-solid fa-caravan"></i> 1. Direct Access</h3>
+                        <p>Field visits, bootcamps, and hands-on workshops covering hygiene, technology, languages, health, and life skills.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fa-solid fa-wifi"></i> 2. Digital Access</h3>
+                        <p>For hard-to-reach areas: online information hubs, educational video content, and awareness networks.</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fa-solid fa-hand-holding-heart"></i> 3. Sponsorship</h3>
+                        <p>Solidarity logistics: collecting and distributing hygiene kits, school supplies, and emergency essentials.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="action" class="section-view">
+                <h2 class="slide-title">Why We're Positioned to Act</h2>
+                <div class="grid-2">
+                    <div>
+                        <p class="lead">As students, we can't change public policy directly, but we hold three real levers:</p>
+                        <ul class="custom-list" style="margin-top: 15px;">
+                            <li><i class="fa-solid fa-battery-full"></i> <strong>Energy & time:</strong> A motivated group ready to get involved on the ground.</li>
+                            <li><i class="fa-solid fa-graduation-cap"></i> <strong>Knowledge, made simple:</strong> Turning complex ideas in health and tech into clear, accessible messages.</li>
+                            <li><i class="fa-solid fa-people-group"></i> <strong>The power to mobilize:</strong> Rallying our networks and civil society around inclusion.</li>
+                        </ul>
+                    </div>
+                    <div style="background-color: rgba(17, 202, 160, 0.1); padding: 30px; border-radius: 12px; border: 1px dashed var(--secondary);">
+                        <p style="font-style: italic; font-size: 18px; line-height: 1.6; color: var(--primary-dark);">"Knowledge only has value when it's shared. Our education truly earns its purpose when it serves those who need it most."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="impact" class="section-view">
+                <h2 class="slide-title">Expected Impact</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3><i class="fa-solid fa-hourglass-start"></i> Short Term</h3>
+                        <p>Immediate support: practical knowledge transfer to children, better hygiene habits, and distribution of school support kits.</p>
+                    </div>
+                    <div class="card" style="border-bottom-color: var(--primary);">
+                        <h3><i class="fa-solid fa-hourglass-end"></i> Long Term</h3>
+                        <p>Reduced poverty through greater initiative, fewer preventable public health issues thanks to prevention, and a gradual narrowing of the social inequality gap.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="commitment" class="section-view">
+                <h2 class="slide-title">Our Commitment</h2>
+                <div class="commitment-box">
+                    <h3>A concrete promise of action</h3>
+                    <p>We are committed to building and sustaining this student network. We're pooling our emerging professional skills and our own resources to launch the first field actions on our own, before ever seeking outside institutional sponsorship.</p>
+                    <p style="margin-top: 15px; font-weight: bold; color: var(--secondary);">Our motto: No one gets left behind.</p>
+                </div>
+            </div>
+
+            <div class="slide-counter" id="slideCounter">1 / 8</div>
+
+        </div>
+    </div>
+
+    <script>
+        const sectionOrder = ['home', 'problem', 'affected', 'why', 'solution', 'action', 'impact', 'commitment'];
+
+        function showSection(sectionId, clickedItem) {
+            // Hide all sections
+            document.querySelectorAll('.section-view').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Deactivate all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Activate the requested section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Highlight the clicked nav item
+            if (clickedItem) {
+                clickedItem.classList.add('active');
+            }
+
+            // Update slide counter
+            const index = sectionOrder.indexOf(sectionId);
+            if (index !== -1) {
+                document.getElementById('slideCounter').textContent = `${index + 1} / ${sectionOrder.length}`;
+            }
+        }
+
+        // Keyboard navigation: arrow keys move between slides
+        document.addEventListener('keydown', (e) => {
+            const activeIndex = sectionOrder.findIndex(id =>
+                document.getElementById(id).classList.contains('active')
+            );
+            let nextIndex = null;
+
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                nextIndex = Math.min(activeIndex + 1, sectionOrder.length - 1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                nextIndex = Math.max(activeIndex - 1, 0);
+            }
+
+            if (nextIndex !== null && nextIndex !== activeIndex) {
+                const navItems = document.querySelectorAll('.nav-item');
+                showSection(sectionOrder[nextIndex], navItems[nextIndex]);
+            }
+        });
+    </script>
+</body>
+</html>
